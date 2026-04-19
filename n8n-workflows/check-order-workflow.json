@@ -1,0 +1,87 @@
+{
+  "name": "Check Order Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "check-order",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ],
+      "id": "1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM legacy.orders WHERE customer_email = :email OR id::text = :orderId LIMIT 1",
+        "additionalFields": {
+          "queryParams": "email={{$node[\"Webhook\"].json[\"body\"][\"email\"]}},orderId={{$node[\"Webhook\"].json[\"body\"][\"orderId\"]}}"
+        }
+      },
+      "name": "Legacy DB Query",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        350,
+        300
+      ],
+      "id": "2",
+      "credentials": {
+        "postgres": {
+          "id": "postgres_cred_id"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "response",
+              "value": "={{$node[\"Legacy DB Query\"].json}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Format Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        600,
+        300
+      ],
+      "id": "3"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Legacy DB Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Legacy DB Query": {
+      "main": [
+        [
+          {
+            "node": "Format Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

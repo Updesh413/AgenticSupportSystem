@@ -1,0 +1,13 @@
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\strategy\HumanEscalationStrategy.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\domain\Ticket.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\AgenticSupportApplication.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\config\AgentConfig.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\repository\TicketRepository.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\dto\TicketRequest.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\strategy\ResolutionStrategy.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\controller\HomeController.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\service\TicketService.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\ai\CustomerSupportAgent.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\ai\SupportTools.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\strategy\AutoResolveStrategy.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\controller\TicketController.java

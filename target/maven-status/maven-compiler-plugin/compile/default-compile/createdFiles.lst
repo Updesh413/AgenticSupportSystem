@@ -1,0 +1,14 @@
+com\agenticsupport\repository\TicketRepository.class
+com\agenticsupport\controller\TicketController.class
+com\agenticsupport\dto\TicketRequest.class
+com\agenticsupport\strategy\HumanEscalationStrategy.class
+com\agenticsupport\ai\SupportTools.class
+com\agenticsupport\strategy\ResolutionStrategy.class
+com\agenticsupport\domain\Ticket$TicketStatus.class
+com\agenticsupport\domain\Ticket$TicketBuilder.class
+com\agenticsupport\AgenticSupportApplication.class
+com\agenticsupport\domain\Ticket.class
+com\agenticsupport\ai\CustomerSupportAgent.class
+com\agenticsupport\service\TicketService.class
+com\agenticsupport\strategy\AutoResolveStrategy.class
+com\agenticsupport\config\AgentConfig.class
