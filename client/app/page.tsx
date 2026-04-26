@@ -61,7 +61,7 @@ export default function Home() {
       setActiveTicket(data);
       startPolling(data.id);
     } catch (err) {
-      alert("System unreachable. Ensure backend is running.");
+      alert("The support server is currently 'waking up' from sleep mode. This is common on free hosting tiers. Please wait 30 seconds and try again!");
       setLoading(false);
     }
   };
