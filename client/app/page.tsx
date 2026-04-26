@@ -255,6 +255,3 @@ function StatusBadge({ status, size = "md" }: { status: string, size?: "sm" | "m
     </span>
   );
 }
-span>
-  );
-}
