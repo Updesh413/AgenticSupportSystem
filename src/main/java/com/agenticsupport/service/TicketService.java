@@ -10,6 +10,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -23,6 +27,22 @@ public class TicketService {
     private final CustomerSupportAgent agent;
     private final Map<String, ResolutionStrategy> strategies;
 
+    public List<Ticket> getAllTickets() {
+        return ticketRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    public List<Ticket> getTicketsByEmail(String email) {
+        return ticketRepository.findAllByCustomerEmailOrderByCreatedAtDesc(email);
+    }
+
+    @Transactional
+    public Ticket updateTicket(UUID id, String resolutionNotes, Ticket.TicketStatus status) {
+        Ticket ticket = getTicket(id);
+        ticket.setResolutionNotes(resolutionNotes);
+        ticket.setStatus(status);
+        return ticketRepository.save(ticket);
+    }
+
     @Transactional
     public Ticket createTicket(String email, String query) {
         log.info("Creating new ticket for: {}", email);
@@ -34,8 +54,13 @@ public class TicketService {
         
         Ticket savedTicket = ticketRepository.save(ticket);
         
-        // Triggering AI processing. With Virtual Threads, this can be a simple task.
-        CompletableFuture.runAsync(() -> processTicket(savedTicket));
+        // Ensure AI processing starts ONLY after the ticket is committed to DB
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                CompletableFuture.runAsync(() -> processTicket(savedTicket));
+            }
+        });
         
         return savedTicket;
     }

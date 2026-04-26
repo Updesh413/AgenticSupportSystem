@@ -6,8 +6,10 @@ C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\r
 C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\dto\TicketRequest.java
 C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\strategy\ResolutionStrategy.java
 C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\controller\HomeController.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\config\SecurityConfig.java
 C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\service\TicketService.java
 C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\ai\CustomerSupportAgent.java
 C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\ai\SupportTools.java
 C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\strategy\AutoResolveStrategy.java
 C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\controller\TicketController.java
+C:\Users\rambh\Downloads\AgenticSupportSystem\src\main\java\com\agenticsupport\config\WebConfig.java

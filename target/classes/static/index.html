@@ -3,59 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentic Support System</title>
+    <title>Agentic Support Portal</title>
+    <!-- React, ReactDOM, and Babel for JSX -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         :root {
             --primary: #2563eb;
+            --primary-hover: #1d4ed8;
             --bg: #f8fafc;
-            --text: #1e293b;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #3b82f6;
         }
+
+        * { box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            text-align: center;
+            line-height: 1.5;
         }
-        .container {
-            max-width: 600px;
-            padding: 2rem;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
         }
-        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--primary); }
-        p { font-size: 1.125rem; line-height: 1.6; color: #64748b; }
-        .status {
-            display: inline-block;
-            margin-top: 1.5rem;
+        nav button {
+            background: none;
+            border: none;
             padding: 0.5rem 1rem;
-            background: #dcfce7;
-            color: #166534;
-            border-radius: 9999px;
             font-weight: 600;
-            font-size: 0.875rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            border-radius: 6px;
+            transition: all 0.2s;
         }
-        code {
+        nav button.active {
+            color: var(--primary);
+            background: #dbeafe;
+        }
+
+        /* Common Components */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+        h1 { margin-top: 0; font-size: 1.875rem; color: var(--primary); }
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        button.btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        button.btn-primary:hover { background: var(--primary-hover); }
+
+        /* Badge Styles */
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-OPEN { background: #fee2e2; color: #991b1b; }
+        .badge-IN_PROGRESS { background: #dbeafe; color: #1e40af; }
+        .badge-RESOLVED { background: #dcfce7; color: #166534; }
+        .badge-ESCALATED_TO_HUMAN { background: #fef3c7; color: #92400e; }
+
+        /* Dashboard Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { text-align: left; padding: 1rem; border-bottom: 1px solid var(--border); }
+        th { color: var(--text-muted); font-size: 0.875rem; font-weight: 600; }
+
+        /* Agent Thinking Animation */
+        .thinking {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .result-box {
             background: #f1f5f9;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            white-space: pre-wrap;
+            margin-top: 1rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Agentic Support AI</h1>
-        <p>The system is <strong>online</strong> and ready to process customer queries using Gemini Flash.</p>
-        <div class="status">● System Operational</div>
-        <p style="margin-top: 2rem; font-size: 0.875rem;">
-            Test the API via <code>POST /api/tickets</code>
-        </p>
-    </div>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const App = () => {
+            const [view, setView] = useState('customer');
+
+            return (
+                <div className="container">
+                    <nav>
+                        <button 
+                            className={view === 'customer' ? 'active' : ''} 
+                            onClick={() => setView('customer')}
+                        >
+                            Customer Portal
+                        </button>
+                        <button 
+                            className={view === 'admin' ? 'active' : ''} 
+                            onClick={() => setView('admin')}
+                        >
+                            Agent Dashboard
+                        </button>
+                    </nav>
+
+                    {view === 'customer' ? <CustomerPortal /> : <AgentDashboard />}
+                </div>
+            );
+        };
+
+        const CustomerPortal = () => {
+            const [email, setEmail] = useState('');
+            const [query, setQuery] = useState('');
+            const [ticket, setTicket] = useState(null);
+            const [loading, setLoading] = useState(false);
+            const pollInterval = useRef(null);
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                try {
+                    const response = await fetch('/api/tickets', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, query })
+                    });
+                    const data = await response.json();
+                    setTicket(data);
+                    startPolling(data.id);
+                } catch (err) {
+                    alert('Error creating ticket');
+                    setLoading(false);
+                }
+            };
+
+            const startPolling = (id) => {
+                pollInterval.current = setInterval(async () => {
+                    const response = await fetch(`/api/tickets/${id}`);
+                    const updatedTicket = await response.json();
+                    setTicket(updatedTicket);
+
+                    if (updatedTicket.status === 'RESOLVED' || updatedTicket.status === 'ESCALATED_TO_HUMAN') {
+                        clearInterval(pollInterval.current);
+                        setLoading(false);
+                    }
+                }, 2000);
+            };
+
+            useEffect(() => {
+                return () => clearInterval(pollInterval.current);
+            }, []);
+
+            return (
+                <div className="card">
+                    <h1>Help & Support</h1>
+                    {!ticket ? (
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>Email Address</label>
+                                <input 
+                                    type="email" 
+                                    value={email} 
+                                    onChange={(e) => setEmail(e.target.value)} 
+                                    required 
+                                    placeholder="your@email.com"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>How can we help today?</label>
+                                <textarea 
+                                    rows="4" 
+                                    value={query} 
+                                    onChange={(e) => setQuery(e.target.value)} 
+                                    required
+                                    placeholder="Describe your issue (e.g., 'Where is my order #123?')"
+                                ></textarea>
+                            </div>
+                            <button className="btn-primary" type="submit">Submit Request</button>
+                        </form>
+                    ) : (
+                        <div>
+                            <h3>Ticket: {ticket.id.substring(0, 8)}...</h3>
+                            <div style={{ marginBottom: '1rem' }}>
+                                Status: <span className={`badge badge-${ticket.status}`}>{ticket.status}</span>
+                            </div>
+                            
+                            {(ticket.status === 'OPEN' || ticket.status === 'IN_PROGRESS') && (
+                                <div className="thinking">
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <span>AI Agent is analyzing your request...</span>
+                                </div>
+                            )}
+
+                            {ticket.resolutionNotes && (
+                                <div>
+                                    <label>Agent Response:</label>
+                                    <div className="result-box">
+                                        {ticket.resolutionNotes.replace(/\[DECISION: (RESOLVED|ESCALATED)\]/, '').trim()}
+                                    </div>
+                                </div>
+                            )}
+
+                            <button 
+                                className="btn-primary" 
+                                style={{ marginTop: '2rem', background: '#94a3b8' }} 
+                                onClick={() => { setTicket(null); setEmail(''); setQuery(''); }}
+                            >
+                                Submit Another Request
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const AgentDashboard = () => {
+            const [tickets, setTickets] = useState([]);
+            const [loading, setLoading] = useState(true);
+
+            const fetchTickets = async () => {
+                setLoading(true);
+                try {
+                    const response = await fetch('/api/tickets');
+                    const data = await response.json();
+                    setTickets(data);
+                } catch (err) {
+                    console.error('Error fetching tickets:', err);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            useEffect(() => {
+                fetchTickets();
+            }, []);
+
+            return (
+                <div className="card" style={{ maxWidth: 'none' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                        <h1>Support Queue</h1>
+                        <button className="btn-primary" style={{ width: 'auto' }} onClick={fetchTickets}>
+                            {loading ? 'Refreshing...' : 'Refresh Queue'}
+                        </button>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Query</th>
+                                <th>Status</th>
+                                <th>Decision Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tickets.map(t => (
+                                <tr key={t.id}>
+                                    <td style={{ fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                                        {new Date(t.createdAt).toLocaleString()}
+                                    </td>
+                                    <td>{t.customerEmail}</td>
+                                    <td style={{ maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                        {t.query}
+                                    </td>
+                                    <td>
+                                        <span className={`badge badge-${t.status}`}>{t.status}</span>
+                                    </td>
+                                    <td style={{ fontSize: '0.875rem' }}>
+                                        {t.resolutionNotes ? (
+                                            t.resolutionNotes.length > 50 ? t.resolutionNotes.substring(0, 50) + '...' : t.resolutionNotes
+                                        ) : '-'}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    {tickets.length === 0 && !loading && (
+                        <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
+                            No tickets found in the system.
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
