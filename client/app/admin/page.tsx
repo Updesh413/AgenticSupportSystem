@@ -19,7 +19,7 @@ export default function AdminDashboard() {
     if (!isAdmin) return;
     try {
       const token = await getToken();
-      const response = await fetch("http://localhost:8080/api/tickets", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets`, {
           headers: { "Authorization": `Bearer ${token}` }
       });
       const data = await response.json();
@@ -41,7 +41,7 @@ export default function AdminDashboard() {
     
     try {
       const token = await getToken();
-      const response = await fetch(`http://localhost:8080/api/tickets/${resolvingTicket.id}/resolve`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets/${resolvingTicket.id}/resolve`, {
         method: "PUT",
         headers: { 
             "Content-Type": "application/json",
@@ -106,7 +106,7 @@ export default function AdminDashboard() {
             {loading ? "Refreshing..." : "Refresh Queue"}
           </button>
           <div className="h-6 w-px bg-slate-200"></div>
-          <UserButton afterSignOutUrl="/sign-in" />
+          <UserButton />
         </div>
       </nav>
 

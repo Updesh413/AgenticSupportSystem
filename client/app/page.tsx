@@ -20,7 +20,7 @@ export default function Home() {
     try {
       const token = await getToken();
       const email = user.primaryEmailAddress?.emailAddress;
-      const response = await fetch(`http://localhost:8080/api/tickets/customer?email=${email}&t=${Date.now()}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets/customer?email=${email}&t=${Date.now()}`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -46,7 +46,7 @@ export default function Home() {
     setLoading(true);
     try {
       const token = await getToken();
-      const response = await fetch("http://localhost:8080/api/tickets", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets`, {
         method: "POST",
         headers: { 
             "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export default function Home() {
     pollInterval.current = setInterval(async () => {
       try {
         const token = await getToken();
-        const response = await fetch(`http://localhost:8080/api/tickets/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets/${id}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
         const updatedTicket = await response.json();
@@ -120,7 +120,7 @@ export default function Home() {
             Admin Entry
           </Link>
           <div className="h-6 w-px bg-slate-200"></div>
-          <UserButton afterSignOutUrl="/sign-in" />
+          <UserButton />
         </div>
       </nav>
 
@@ -253,5 +253,8 @@ function StatusBadge({ status, size = "md" }: { status: string, size?: "sm" | "m
     <span className={`${sizeClasses} rounded-lg font-black uppercase border ${colors[status] || "bg-slate-50 text-slate-400"}`}>
       {status ? status.replace(/_/g, " ") : "Unknown"}
     </span>
+  );
+}
+span>
   );
 }
